@@ -4,9 +4,6 @@ import java.sql.*;
 import Util.ConnectionUtil;
 import Model.Account;
 
-import java.util.ArrayList;
-import java.util.List;
-
 
 public class AccountDAO {
 
@@ -38,41 +35,31 @@ public class AccountDAO {
     }
 
 
-    // Get all Accounts
+    // Get Account by Username
 
-    // public List<Account> getAllAccounts() {
-    //     Connection connection = ConnectionUtil.getConnection();
-    //     List<Account> accounts = new ArrayList<>();
+    public Account getAccountByUsername(String username) {
+        String sql = "SELECT * FROM Account WHERE username = ?";
+        
+        try (Connection conn = ConnectionUtil.getConnection();
+            PreparedStatement ps = conn.prepareStatement(sql)) {
+            
+            ps.setString(1, username);
+            ResultSet rs = ps.executeQuery();
+            
+            if (rs.next()) {
+                Account account = new Account(rs.getInt("account_id"),
+                rs.getString("username"), 
+                rs.getString("password"));
+                
+                return account;
+            }
 
-    //     try{
-    //         String sql = "SELECT * FROM Account";
-    //         PreparedStatement preparedStatement = connection.prepareStatement(sql);
-    //         ResultSet rs = preparedStatement.getResultSet();
+        } catch (SQLException e) {
+            e.printStackTrace(); 
+        }
 
-    //         while(rs.next()){
-    //             Account account = new Account(rs.getInt("account_id"), 
-    //             rs.getString("username"), 
-    //             rs.getString("password"));
-
-    //             accounts.add(account);
-    //         }
-    //     } catch (Exception e){
-    //         System.out.println(e.getStackTrace());
-    //     }
-    //     return accounts;
-    // }
-
-   
-
-
-
-
-
-
-
-
-
-
+        return null;
+    }
 
 
 
@@ -81,40 +68,45 @@ public class AccountDAO {
 
     // Login
 
+    public Account login(Account account) {
+        Connection connection = ConnectionUtil.getConnection();
 
+        try {
+            String sql = "SELECT * FROM Account WHERE username = ? AND password = ?";
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setString(1, account.getUsername());
+            preparedStatement.setString(2, account.getPassword());
 
+            ResultSet rs = preparedStatement.executeQuery();
+            
+            if (rs.next()) {
+                return new Account(
+                    rs.getInt("account_id"),
+                    rs.getString("username"), 
+                    rs.getString("password"));  
+                   } 
 
-    // New Message
+        } catch (Exception e) {
+            System.out.println(e.getStackTrace());
+        }
 
-
-
-
-
-    // Retrieve All Messages
-
-
-
-
-
-
-    // Retrieve Message By ID
-
-
-
-
-
-
-    // Delete Message By ID
-
-
-
-
-    // Update Message By Id
+        return null;
+        
+    }
 
 
 
 
-    // Retrieve All Messages By Particular User
+
+
+
+
+
+
+
+
+
+
 
 
 

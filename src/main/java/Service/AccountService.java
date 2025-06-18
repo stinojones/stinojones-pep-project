@@ -2,18 +2,11 @@ package Service;
 
 import Model.Account;
 
-import java.util.ArrayList;
 
 import DAO.AccountDAO;
 
-public class AccountService {
-    // private DAO
+public class AccountService { 
     private AccountDAO accountDAO;
-    
-    
-    
-    
-
 
     // make instance constructor of private DAO
     public AccountService(){
@@ -21,23 +14,25 @@ public class AccountService {
     }
 
 
-
     public Account registerAccount(Account account){
-        if(!account.getUsername().isBlank() && account.getPassword().length() >= 4) {
+        Account existing = accountDAO.getAccountByUsername(account.getUsername());
+        
+        if(existing == null && !account.getUsername().isBlank() && account.getPassword().length() >= 4) {
             return accountDAO.registerAccount(account);
-        } else return null;
-
-        
-
-
-        
-
-        
+        } else {return null;}
     }
 
 
+    public Account login(Account account){
+
+        if(accountDAO.login(account) != null){
+            return accountDAO.login(account);
+        } else {
+            return null;
+        }
+
+        
 
 
-
-    
+    }
 }
