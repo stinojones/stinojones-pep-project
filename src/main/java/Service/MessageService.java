@@ -33,7 +33,8 @@ public class MessageService {
     }
 
 
-    // public Message getMessageById(){
-    //     return messageDAO.getMessageById(message.getMessageById);
-    // }
+    public Message getMessageById(int message_id){
+        return messageDAO.getMessageById(message_id);
+    }
+
 }

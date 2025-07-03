@@ -35,6 +35,7 @@ public class SocialMediaController {
         app.post("/login", this::loginHandler);
         app.post("/messages", this:: newMessageHandler);
         app.get("/messages", this:: getAllMessagesHandler);
+        app.get("/messages/{message_id}", this:: getMessageByIdHandler);
 
 
 
@@ -83,5 +84,20 @@ public class SocialMediaController {
         ArrayList<Message> messages = messageService.getAllMessages();
 
         ctx.json(om.writeValueAsString(messages));
+    }
+
+
+    private void getMessageByIdHandler(Context ctx) throws JsonProcessingException {
+        // paramater way of getting info rather than om
+        int messageId = Integer.parseInt(ctx.pathParam("message_id"));
+        Message message = messageService.getMessageById(messageId);
+
+        if (message != null) {
+            ctx.json(message);
+        } else {
+            // empty body
+            ctx.result(""); 
+            }
+
     }
 }

@@ -48,9 +48,7 @@ public class MessageDAO {
 
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
 
-            preparedStatement.executeQuery();
-
-            ResultSet rs = preparedStatement.getResultSet();
+            ResultSet rs = preparedStatement.executeQuery();
 
             if(rs.next()){
                 int message_id = rs.getInt("message_id");
@@ -70,7 +68,7 @@ public class MessageDAO {
         return messages;
     }
 
-    
+
 
     // Retrieve Message by it's Id
 
@@ -84,7 +82,7 @@ public class MessageDAO {
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setInt(1, message_id);
 
-            ResultSet rs = preparedStatement.getResultSet();
+            ResultSet rs = preparedStatement.executeQuery();
 
             if(rs.next()){
                 int posted_by = rs.getInt("posted_by");
@@ -101,7 +99,6 @@ public class MessageDAO {
         }
 
         return null;
-
     }
 
 
