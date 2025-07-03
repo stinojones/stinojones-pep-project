@@ -101,6 +101,52 @@ public class MessageDAO {
         return null;
     }
 
+    // Delete Message by it's Id
+
+      public void deleteMessageById(int message_id){
+
+      try {
+            Connection connection = ConnectionUtil.getConnection();
+
+            String sql = "DELETE FROM Message WHERE message_id = ?";
+
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setInt(1, message_id);
+            // execute update for updates and deletions || execute query for queries
+            preparedStatement.executeUpdate();
+
+            
+        } catch (Exception e) {
+            System.out.println(e.getStackTrace());
+        }
+    }
+
+
+
+    // Update Message by it's Id
+
+    public String updateMessageById(int message_id, String message_text){
+
+        try {
+            Connection connection = ConnectionUtil.getConnection();
+            String sql = "UPDATE Message SET message_text = ? WHERE message_id = ?";
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+
+            preparedStatement.setString(1, message_text);
+            preparedStatement.setInt(2, message_id);
+
+            preparedStatement.executeUpdate();
+
+        } catch (Exception e) {
+            System.out.println(e.getStackTrace());
+        }
+
+        return null;
+        
+    }
+
+
+
 
 
 

@@ -3,6 +3,8 @@ package Controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import io.javalin.Javalin;
@@ -36,6 +38,8 @@ public class SocialMediaController {
         app.post("/messages", this:: newMessageHandler);
         app.get("/messages", this:: getAllMessagesHandler);
         app.get("/messages/{message_id}", this:: getMessageByIdHandler);
+        app.delete("/messages/{message_id}", this:: deleteMessageByIdHandler);
+        app.patch("/messages/{message_id}", this:: updateMessageByIdHandler);
 
 
 
@@ -98,6 +102,37 @@ public class SocialMediaController {
             // empty body
             ctx.result(""); 
             }
+    }
+
+    private void deleteMessageByIdHandler(Context ctx) throws JsonProcessingException {
+        int messageId = Integer.parseInt(ctx.pathParam("message_id"));
+        Message message = messageService.deleteMessageById(messageId);
+
+        if(message != null) {
+            ctx.json(message);
+        } else {
+            ctx.result("");
+        } 
+        
+    }
+
+
+    private void updateMessageByIdHandler(Context ctx) throws JsonProcessingException{
+        int messageId = Integer.parseInt(ctx.pathParam("message_id"));
+
+        ObjectMapper om = new ObjectMapper();
+        Message message = om.readValue(ctx.body(), Message.class);
+        String messageTextUpdate = message.getMessage_text();
+
+        Message updatedMessage = messageService.updateMessageById(messageId, messageTextUpdate);
+
+        if(updatedMessage != null){
+            ctx.json(updatedMessage);
+        } else {
+            ctx.status(400);
+        }
+      
 
     }
+
 }
