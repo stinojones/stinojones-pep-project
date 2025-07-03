@@ -145,76 +145,35 @@ public class MessageDAO {
         
     }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    // Retrieve All Messages
-
-
-
-
-    // Retrieve Message By ID
-
-
-
-
-    // Delete Message By ID
-
-
-
-
-    // Update Message By Id
-
-
-
-
-    // Retrieve All Messages By Particular User
-
-
-
-
-
-    
+    // Get all messages of an account
+
+    public ArrayList<Message> getAllMessageFromAccount(int account_id){
+        ArrayList<Message> messages = new ArrayList<>();
+
+        try {
+            Connection connection = ConnectionUtil.getConnection();
+            String sql = "SELECT * FROM Message WHERE posted_by = ?";
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setInt(1, account_id);
+
+            ResultSet rs = preparedStatement.executeQuery();
+
+            while(rs.next()){
+                int message_id = rs.getInt("message_id");
+                int posted_by = rs.getInt("posted_by");
+                String message_text = rs.getString("message_text");
+                long time_posted_epoch = rs.getLong("time_posted_epoch");
+                
+                Message message = new Message(message_id, posted_by, message_text, time_posted_epoch);
+
+                messages.add(message);
+            }
+
+            
+        } catch (Exception e) {
+            System.out.println(e.getStackTrace());
+        }
+
+        return messages;
+    }
 }

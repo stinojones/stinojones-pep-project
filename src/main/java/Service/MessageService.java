@@ -67,4 +67,9 @@ public class MessageService {
         return null;
     }
 
+    // get all messages from an account
+    public ArrayList<Message> getAllMessagesFromAnAccount(int account_id){
+        return messageDAO.getAllMessageFromAccount(account_id);
+    }
+
 }
